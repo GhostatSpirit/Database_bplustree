@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ typedef long KEY;
 typedef string VALUE;
 
 // define the rank of this B+ tree
-const int TREE_RANK = 4;
+const int MAX_ORDER = 4;
 
 // the base class of each B+ tree node
 struct Node {
@@ -32,30 +33,31 @@ struct Node {
 
 
 struct InnerNode : public Node {
-	vector<KEY> keys;
-	vector<Node*> p_children;
+	array<KEY, MAX_ORDER> keys;
+	array<Node*, MAX_ORDER + 1> p_children;
+
+	// size = how many keys are being used
+	// 0 <= size <= MAX_ORDER
+	int fill_count;
+
+	// pointer to the next node is useful for traversing
+	InnerNode* next;
 
 	bool is_last_inner = false;
 
-	InnerNode* next;
-
-
 	InnerNode() {
 		// use reserve() to optimize memory cost and execution time
-		keys.reserve(TREE_RANK);
-		int max_children_size = TREE_RANK + 1;
-		p_children.reserve(max_children_size);
 
 		// set the type to INNER
 		type = INNER;
 	}
 
 	inline int size() {
-		return keys.size();
+		return fill_count;
 	}
 
 	inline bool is_full() {
-		return (keys.size() == TREE_RANK);
+		return (fill_count == keys.size());
 	}
 
 	~InnerNode(){}
@@ -63,21 +65,28 @@ struct InnerNode : public Node {
 };
 
 struct LeafNode :public Node {
-	vector<KEY> keys;
+	array<KEY, MAX_ORDER> keys;
 	// TODO: change VALUE to the a number that stores the position in data file
-	vector<string> values;
+	array<VALUE, MAX_ORDER> values;
+
+	// size = how many keys are being used
+	// 0 <= size <= MAX_ORDER
+	int fill_count;
+
+	// pointer to the next node is useful for traversing
+	LeafNode* next;
 
 	LeafNode() {
-		// use reserve() to optimize memory cost and execution time
-		keys.reserve(TREE_RANK);
-		values.reserve(TREE_RANK);
-
 		// set the type to leaf
 		type = LEAF;
 	}
 
+	inline int size() {
+		return fill_count;
+	}
+
 	inline bool is_full() {
-		return (keys.size() == TREE_RANK);
+		return (fill_count == keys.size());
 	}
 
 	~LeafNode() {}

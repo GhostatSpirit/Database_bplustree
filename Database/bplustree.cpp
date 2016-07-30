@@ -28,13 +28,13 @@ LeafNode * BPlusTree::find_node(Node* node, const KEY& key)
 
 Node * BPlusTree::find_child_node(InnerNode * node, const KEY & key)
 {
-	if (node->keys.size() == 0) {
+	if (node->size() == 0) {
 		throw runtime_error("find_child_node: InnerNode does not have any key");
 		return nullptr;
 	}
 
 	// check if the vector size of the two vectors in the InnerNode fits
-	if ((node->keys.size() + 1) != (node->p_children.size())) {
+	if ((node->size() + 1) != (node->p_children.size())) {
 		throw runtime_error("find_child_node: sizes of two vectors does not fit");
 		return nullptr;
 	}
@@ -43,7 +43,7 @@ Node * BPlusTree::find_child_node(InnerNode * node, const KEY & key)
 	unsigned int key_index = 0;
 	unsigned int p_children_index = 0;
 
-	while (key_index <= node->keys.size()) {
+	while (key_index <= node->size()) {
 		if (key < node->keys[key_index]) {
 			return node->p_children[p_children_index];
 		}

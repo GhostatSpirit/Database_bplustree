@@ -41,5 +41,8 @@
     <ClCompile Include="bplustree.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="bplusnode.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

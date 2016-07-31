@@ -155,6 +155,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bplusnode.cpp" />
     <ClCompile Include="bplustree.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="stdafx.cpp" />

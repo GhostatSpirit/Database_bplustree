@@ -35,10 +35,13 @@ int main()
 {
 	BPlusTree tree;
 	tree.insert(1, genRandomStr());
+	tree.insert(5, genRandomStr());
+	tree.insert(4, genRandomStr());
 	tree.insert(2, genRandomStr());
 	tree.insert(3, genRandomStr());
-	tree.insert(4, genRandomStr());
-	tree.insert(5, genRandomStr());
+
+	cout << *tree.find(4) << endl;
+
 
 	system("pause");
 }

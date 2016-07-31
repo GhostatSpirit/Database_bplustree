@@ -142,13 +142,22 @@ LeafNode * BPlusTree::find_leaf_node(Node* node, const KEY& key)
 
 	// else, the node is a inner node, so we can cast it
 	InnerNode* p_inner_node = reinterpret_cast<InnerNode*>(node);
+
+
 	// and find the next child node to be traversed
 	Node* p_next_node = find_child_node(p_inner_node, key);
-	// and find this next node
-	find_leaf_node(p_next_node, key);
+
+	while (p_next_node->type != Node::LEAF) {
+		// if the node is not the leaf node, it is an inner node
+		InnerNode* temp_inner = reinterpret_cast<InnerNode*>(p_next_node);
+		p_next_node = find_child_node(temp_inner, key);
+	}
 	
-	// if anything goes wrong, return nullptr
-	return nullptr;
+	// now we can be sure that p_next_node is LeafNode,
+	// cast it to the p_leaf_node;
+	LeafNode* p_leaf_node = reinterpret_cast<LeafNode*>(p_next_node);
+
+	return p_leaf_node;
 }
 
 Node * BPlusTree::find_child_node(InnerNode * node, const KEY & key)

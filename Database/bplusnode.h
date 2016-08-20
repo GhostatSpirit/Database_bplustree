@@ -9,11 +9,11 @@
 
 using namespace std;
 
-typedef long KEY;
+typedef unsigned long KEY;
 typedef string VALUE;
 
 // define the rank of this B+ tree
-const int MAX_ORDER = 4;
+const int MAX_ORDER = 64;
 
 // the base class of each B+ tree node
 struct Node {
@@ -44,57 +44,25 @@ struct InnerNode : public Node {
 	vector<Node*> p_children;
 
 	InnerNode* parent;
-
 	// pointer to the next node is useful for traversing
 	InnerNode* next;
 
-	inline bool is_last_inner() {
-		if (p_children.size() == 0) {
-			return false;
-		}
-
-		if (p_children[0]->type == Node::LEAF) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	InnerNode() {
-		parent = nullptr;
-		next = nullptr;
-		// use reserve() to optimize memory cost and execution time
-		keys.reserve(MAX_ORDER);
-		int max_children_size = MAX_ORDER + 1;
-		p_children.reserve(max_children_size);
-		// set the type to INNER
-		type = INNER;
-	}
+	// default constructor
+	InnerNode();
 
 	// construct the inner using two existing vectors
 	InnerNode(vector<KEY>& _keys, vector<Node*> & _pchildren);
 	//// construct the inner node using LeafNodeUnit, set the parent of the child nodes automatically
 	//InnerNode(LeafNodeUnit& unit);
 
-	Node* next_node() {
-		return next;
-	}
 
-	inline unsigned size() {
-		return keys.size();
-	}
+	Node* next_node() { return next; }
+	inline unsigned size() { return keys.size(); }
+	bool is_last_inner();
+	inline bool is_full() { return (keys.size() == MAX_ORDER); }
 
-	inline bool is_full() {
-		return (keys.size() == MAX_ORDER);
-	}
-
-	inline void reserve() {
-		// use reserve() to optimize memory cost and execution time
-		keys.reserve(MAX_ORDER);
-		int max_children_size = MAX_ORDER + 1;
-		p_children.reserve(max_children_size);
-	}
+	// use reserve() to optimize memory cost and execution time
+	void reserve();
 
 
 
@@ -174,7 +142,7 @@ struct LeafNodeUnit {
 };
 
 
-// a inner node unit is generated when a leaf node is splited
+// a inner node unit is generated when a inner node is splited
 // | *left | KEY | *right |
 //     |              |
 //     v              v

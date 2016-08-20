@@ -24,7 +24,7 @@ void BPlusTree::insert(const KEY & key, const VALUE & value)
 		// if the target leaf is not full, we can just insert the {key, value} into the leaf node
 		leaf_insert_nonfull(target_leaf, key, value);
 	}
-	else if (target_leaf->parent == nullptr) {
+	else if (target_leaf == this-> root) {
 		// if the target leaf is currently root:
 		// - create a new inner root and set the root pointer to it
 		// - set the parent of leaf nodes
@@ -34,6 +34,8 @@ void BPlusTree::insert(const KEY & key, const VALUE & value)
 
 		// create the new root and set the root pointer
 		InnerNode* new_root = new InnerNode();
+
+		//cout << "Setting new root: " << unit.key << endl;
 
 		inner_insert_nonfull(new_root, unit);			// the parent of leaf nodes are set by this function
 		
@@ -118,7 +120,7 @@ BPlusTree::~BPlusTree()
 			next_node = current_node->next_node();
 			delete current_node;
 
-			cout << counter << endl;
+			//cout << counter << endl;
 			counter++;
 
 			current_node = next_node;
@@ -190,10 +192,18 @@ Node * BPlusTree::find_child_node(InnerNode * node, const KEY & key)
 
 VALUE * BPlusTree::find_in_leaf(LeafNode * leaf, const KEY & key)
 {
-	if (leaf->keys.size() == 0) {
+	if (leaf->keys.size() == 0) 
+	{
 		return nullptr;
 	}
 
+	// DEBUG:
+	//cout << "finding in leaf: ";
+	//for (unsigned j = 0; j < leaf->keys.size(); ++j) {
+	//	cout << leaf->keys[j] << " ";
+	//}
+	//cout << "| ";
+	//cout << endl;
 
 	// uses binary search
 	int low = 0;
@@ -394,9 +404,21 @@ void BPlusTree::inner_insert_nonfull(InnerNode * node, InnerNodeUnit unit)
 
 	// first add the key to the inner node
 	node->keys.insert(node->keys.begin() + index, new_key);
+
 	// then we modify the children vector
-	node->p_children[index] = unit.left;
-	node->p_children.insert(node->p_children.begin() + index + 1, unit.right);
+	if (node->p_children.empty()) {
+		node->p_children.push_back(unit.left);
+		node->p_children.push_back(unit.right);
+	}
+	else {
+		node->p_children.erase(node->p_children.begin() + index);
+		array<Node*, 2> nodes = { unit.left, unit.right };
+		node->p_children.insert(node->p_children.begin() + index, nodes.begin(), nodes.end());
+	}
+
+	// set the parent of the children nodes
+	unit.left->parent = node;
+	unit.right->parent = node;
 
 	return;
 
@@ -419,6 +441,7 @@ InnerNodeUnit BPlusTree::inner_insert_full(InnerNode * node, LeafNodeUnit unit)
 
 	KEY new_key = unit.key;
 
+
 	// create two vectors, vector<KEY> and vector<Node*>,
 	// the size of the two vectors is larger than MAX_ORDER (by one)
 	// they are only temporary
@@ -431,6 +454,8 @@ InnerNodeUnit BPlusTree::inner_insert_full(InnerNode * node, LeafNodeUnit unit)
 	// add the two pointers to the temporary vector<Node*>
 	left_pchildren[index] = unit.left;
 	left_pchildren.insert(left_pchildren.begin() + index + 1, unit.right);
+
+	
 
 
 	unsigned threshold = (MAX_ORDER + 1) / 2;
@@ -452,6 +477,21 @@ InnerNodeUnit BPlusTree::inner_insert_full(InnerNode * node, LeafNodeUnit unit)
 	node->reserve();
 	// the new node is the right one
 	InnerNode* right_sibling = new InnerNode(right_keys, right_pchildren);
+
+	// IMPORTANT: reset the original node's children's parent
+	for (unsigned i = 0; i < node->p_children.size(); ++i) {
+		// since what we received is a leaf node unit, children must be leaf nodes
+		LeafNode* leaf_node = reinterpret_cast<LeafNode*>(node->p_children[i]);
+		leaf_node->parent = node;
+	}
+
+	// IMPORTANT: reset the new node's children's parent
+	for (unsigned i = 0; i < right_sibling->p_children.size(); ++i) {
+		// since what we received is a leaf node unit, children must be leaf nodes
+		LeafNode* leaf_node = reinterpret_cast<LeafNode*>(right_sibling->p_children[i]);
+		leaf_node->parent = right_sibling;
+	}
+
 
 	// construct the InnerNodeUnit struct, it will automatically set the next pointer
 	InnerNodeUnit new_unit(middle_key, node, right_sibling);
@@ -478,6 +518,7 @@ InnerNodeUnit BPlusTree::inner_insert_full(InnerNode * node, InnerNodeUnit unit)
 
 	KEY new_key = unit.key;
 
+
 	// create two vectors, vector<KEY> and vector<Node*>,
 	// the size of the two vectors is larger than MAX_ORDER (by one)
 	// they are only temporary
@@ -511,6 +552,20 @@ InnerNodeUnit BPlusTree::inner_insert_full(InnerNode * node, InnerNodeUnit unit)
 	node->reserve();
 	// the new node is the right one
 	InnerNode* right_sibling = new InnerNode(right_keys, right_pchildren);
+
+	// IMPORTANT: reset the original node's children's parent
+	for (unsigned i = 0; i < node->p_children.size(); ++i) {
+		// since what we received is a inner node unit, children must be leaf nodes
+		InnerNode* inner_node = reinterpret_cast<InnerNode*>(node->p_children[i]);
+		inner_node->parent = node;
+	}
+
+	// IMPORTANT: reset the new node's children's parent
+	for (unsigned i = 0; i < right_sibling->p_children.size(); ++i) {
+		// since what we received is a inner node unit, children must be leaf nodes
+		InnerNode* inner_node = reinterpret_cast<InnerNode*>(right_sibling->p_children[i]);
+		inner_node->parent = right_sibling;
+	}
 
 	// construct the InnerNodeUnit struct, it will automatically set the next pointer
 	InnerNodeUnit new_unit(middle_key, node, right_sibling);

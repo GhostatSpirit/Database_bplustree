@@ -34,14 +34,19 @@ string genRandomStr(unsigned length = 20) {
 int main()
 {
 	BPlusTree tree;
-	tree.insert(1, genRandomStr());
-	tree.insert(5, genRandomStr());
-	tree.insert(4, genRandomStr());
-	tree.insert(2, genRandomStr());
-	tree.insert(3, genRandomStr());
+	for (unsigned long i = 0; i < 10000; ++i) {
+		tree.insert(i, genRandomStr());
 
-	cout << *tree.find(4) << endl;
+	}
 
+	unsigned long target = 4;
+
+	tree.print();
+
+	VALUE* p_value = tree.find(target);
+
+	cout << *p_value << endl;
+	
 
 	system("pause");
 }

@@ -34,6 +34,52 @@ public:
 	// destructor of the tree, clear up memory
 	~BPlusTree();
 
+	void print() {
+		unsigned i = 0;
+		LeafNode * leaf_head = reinterpret_cast<LeafNode*>(heads[i]);
+		
+		if (leaf_head->parent == nullptr) {
+			cout << "! ";
+		}
+		for (unsigned j = 0; j < leaf_head->keys.size(); ++j) {
+			cout << leaf_head->keys[j] << " ";
+		}
+		cout << "| ";
+
+		while (leaf_head->next != nullptr) {
+			leaf_head = leaf_head->next;
+			if (leaf_head->parent == nullptr) {
+				cout << "! ";
+			}
+			for (unsigned j = 0; j < leaf_head->keys.size(); ++j) {
+				cout << leaf_head->keys[j] << " ";
+			}
+
+			cout << "| ";
+		}
+
+
+		cout << endl;
+
+		for (i = 1; i < heads.size(); ++i) {
+			InnerNode* inner_head = reinterpret_cast<InnerNode*>(heads[i]);
+			for (unsigned j = 0; j < inner_head->keys.size(); ++j) {
+				cout << inner_head->keys[j] << " ";
+			}
+			cout << "| ";
+
+			while (inner_head->next != nullptr) {
+				inner_head = inner_head->next;
+				for (unsigned j = 0; j < inner_head->keys.size(); ++j) {
+					cout << inner_head->keys[j] << " ";
+				}
+
+				cout << "| ";
+			}
+
+			cout << endl;
+		}
+	}
 
 private:
 	Node* root;				/* stores the root of this B+ tree, using Node* becasue

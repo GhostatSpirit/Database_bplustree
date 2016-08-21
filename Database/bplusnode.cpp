@@ -6,6 +6,9 @@ Node:: ~Node() {
 
 }
 
+
+/*--------------------InnerNode Definitions---------------------*/
+
 InnerNode::~InnerNode()
 {
 }
@@ -55,34 +58,34 @@ InnerNode::InnerNode(vector<KEY>& _keys, vector<Node*>& _pchildren) {
 	type = INNER;
 }
 
-inline void InnerNode::reserve() {
+void InnerNode::reserve() {
 	// use reserve() to optimize memory cost and execution time
 	keys.reserve(MAX_ORDER);
 	int max_children_size = MAX_ORDER + 1;
 	p_children.reserve(max_children_size);
 }
 
-//InnerNode::InnerNode(LeafNodeUnit & unit)
-//{
-//	parent = nullptr;
-//
-//	// set the type to INNER
-//	type = INNER;
-//	// set the parent of the child nodes
-//	unit.left->parent = this;
-//	unit.right->parent = this;
-//
-//	// add values to two vectors
-//	keys.push_back(unit.key);
-//	p_children.push_back(unit.left);
-//	p_children.push_back(unit.right);
-//
-//	// use reserve() to optimize memory cost and execution time
-//	keys.reserve(MAX_ORDER);
-//	int max_children_size = MAX_ORDER + 1;
-//	p_children.reserve(max_children_size);
-//
-//}
+
+
+/*--------------------LeafNode Definitions---------------------*/
+
+LeafNode::LeafNode() {
+	// use reserve() to optimize memory cost and execution time
+	keys.reserve(MAX_ORDER);
+	values.reserve(MAX_ORDER);
+	// set the type to leaf
+	type = LEAF;
+
+	// IMPORTANT: set all invalid pointers to nullptr
+	parent = nullptr;
+	next = nullptr;
+}
+
+
+void LeafNode::reserve() {
+	keys.reserve(MAX_ORDER);
+	values.reserve(MAX_ORDER);
+}
 
 LeafNode::~LeafNode()
 {

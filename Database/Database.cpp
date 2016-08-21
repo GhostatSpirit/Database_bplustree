@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "bplustree.h"
+#include "IndexHash.h"
 
 using namespace std;
 
@@ -30,24 +31,27 @@ string genRandomStr(unsigned length = 20) {
 	return Str;
 }
 
+//
+//int main()
+//{
+//	BPlusTree tree;
+//	for (unsigned long i = 0; i < 10000; ++i) {
+//		tree.insert(i, genRandomStr());
+//
+//	}
+//
+//	unsigned long target = 4;
+//
+//	tree.print();
+//
+//	VALUE* p_value = tree.find(target);
+//
+//	cout << *p_value << endl;
+//	
+//
+//	system("pause");
+//}
 
-int main()
-{
-	BPlusTree tree;
-	for (unsigned long i = 0; i < 10000; ++i) {
-		tree.insert(i, genRandomStr());
-
-	}
-
-	unsigned long target = 4;
-
-	tree.print();
-
-	VALUE* p_value = tree.find(target);
-
-	cout << *p_value << endl;
-	
-
-	system("pause");
+int main() {
+	IndexHash("database.idx");
 }
-

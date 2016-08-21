@@ -30,6 +30,12 @@
     <ClInclude Include="bplustree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IndexHash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="facilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="bplusnode.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexHash.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

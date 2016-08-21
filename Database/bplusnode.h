@@ -9,6 +9,8 @@
 
 using namespace std;
 
+typedef unsigned long POS;		// type for saving the position
+
 typedef unsigned long KEY;
 typedef string VALUE;
 
@@ -25,7 +27,6 @@ struct Node {
 	virtual Node* next_node() = 0;
 
 	Node() {
-		//parent = nullptr;
 		type = BASE;
 	}
 
@@ -37,15 +38,28 @@ struct Node {
 };
 
 
+class NodePos {
+public:
+	// constructors for NodePos
+	NodePos(POS _filepos, Node* _pnode);
+	NodePos(POS _filepos);
+
+private:
+	POS file_pos;
+	Node* p_node;
+
+	bool is_pointer_valid;			// bool for saving if the pointer is valid
+};
+
+
 struct InnerNode : public Node {
 	~InnerNode();
 
 	vector<KEY> keys;
 	vector<Node*> p_children;
 
-	InnerNode* parent;
-	// pointer to the next node is useful for traversing
-	InnerNode* next;
+	InnerNode* parent;  
+	InnerNode* next;	  // pointer to the next node is useful for traversing
 
 	// default constructor
 	InnerNode();
@@ -70,6 +84,7 @@ struct InnerNode : public Node {
 
 
 struct LeafNode :public Node {
+	LeafNode();
 	~LeafNode();
 
 	vector<KEY> keys;
@@ -78,38 +93,15 @@ struct LeafNode :public Node {
 
 	// pointer to the next node is useful for traversing
 	LeafNode* next;
-
 	InnerNode* parent;
 
-	LeafNode() {
-		// use reserve() to optimize memory cost and execution time
-		keys.reserve(MAX_ORDER);
-		values.reserve(MAX_ORDER);
-		// set the type to leaf
-		type = LEAF;
+	Node* next_node() { return next; }
 
-		// IMPORTANT: set all invalid pointers to nullptr
-		parent = nullptr;
-		next = nullptr;
-	}
+	inline unsigned size() { return keys.size(); }
 
+	inline bool is_full() { return (keys.size() == MAX_ORDER); }
 
-	Node* next_node() {
-		return next;
-	}
-
-	inline unsigned size() {
-		return keys.size();
-	}
-
-	inline bool is_full() {
-		return (keys.size() == MAX_ORDER);
-	}
-
-	inline void reserve() {
-		keys.reserve(MAX_ORDER);
-		values.reserve(MAX_ORDER);
-	}
+	void reserve();
 
 
 };

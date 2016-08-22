@@ -4,13 +4,13 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include "facilities.h"
+#include "DataManager.h"
 
 using namespace std;
+using namespace typedefs;
 
 #define MAXTABLESIZE 2000000					// default length for the hash table
-
-typedef unsigned long filepos;
-typedef unsigned long hashval;
 
 struct HashTableUnit {
 
@@ -28,19 +28,27 @@ struct HashTableUnit {
 };
 
 class IndexHash {
+
 public:
-	IndexHash(const string & _file_path, unsigned long _table_size = MAXTABLESIZE);
+	IndexHash(const string & _file_name, unsigned long _table_size = MAXTABLESIZE);
+	~IndexHash();
+
+	int db_store(const string& key, const string& value, int flag = 0);
+
+	string db_fetch(const string& key);
+	int db_delete(const string& key);
+
+private:
+	bool db_exist(const string& key);
 
 
 private:
 	// hash the given string, if succeeded, return true and modify the hash value
-
-  //  bool hash (const string & str, unsigned long& hash_value);
+    bool create_hash(const string & str, hashval& hash_value);
 
 	// search for the hashed value of the given str, 
 	// if succeeded, return true and modify the hash value
-
-//	bool search(const string & str, unsigned long& hash_value);
+	bool get_hash(const string & str, hashval& hash_value);
 
 
 private:
@@ -51,18 +59,49 @@ private:
 
 	vector<HashTableUnit> m_hash_table;
 
+	// the dwHashType values used for three hash calculations
+	const unsigned long HASH_OFFSET = 0, HASH_A = 1, HASH_B = 2;
+
 private:
-	string m_file_path;						// the path to the index hash file
-											// default: database.hash
+	string file_name;							// database
+
+	string m_index_path;						// database.idx
+	string m_index_meta_path;					// database.idx.meta
+
+	// used by database.idx.meta:
+	multimap<keylen, filepos> erased;
+	bool save_meta();
+	bool read_meta();
+
+	string m_data_path;							// database.dat
+
+private:
+	DataManager data_man;						// class for managing data
+
+	filepos AppendIndex(const string & key, const string & value, filepos next_index_pos = 0);
+	bool OverwriteIndex(filepos index_pos, const string& key, const string& value, filepos next_index_pos = 0);
+	bool SetNextIndexPos(filepos index_pos, filepos next_index_pos);
+	filepos GetNextIndexPos(filepos index_pos);
+
+
+	bool DeleteEntry(filepos index_pos, const string& deleted_key, filepos last_index_pos = 0);
+	filepos GetDataPos(filepos index_pos, const string& target_key);
+
+private:
 
 	unsigned long single_bucket_size;			// stores the size(in bytes) of a single bucket
 	filepos first_bucket_pos = 0;				// stores the position of the first bucket
 
-	filepos GetFilepos(hashval hash_value);	// calculate the position of a given bucket (hash_value)
+	filepos ConvertToBucketPos(hashval hash_value);	    // calculate the position of a given bucket (hash_value)
+	keylen get_length(const string & str) { return str.length() + 1; }
 
-private:
-	bool WriteHeader(ofstream & ofs);
-	bool ReadHeader(ifstream & ifs);
+	bool WriteNewHeader();
+	bool WriteHeader();
+	bool ReadHeader();
+
+	void message(string msg) {
+		cout << "> " << msg << endl;
+	}
 
 
 private:

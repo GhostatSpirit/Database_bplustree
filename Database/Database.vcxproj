@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="bplusnode.h" />
     <ClInclude Include="bplustree.h" />
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="facilities.h" />
     <ClInclude Include="IndexHash.h" />
     <ClInclude Include="stdafx.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="bplusnode.cpp" />
     <ClCompile Include="bplustree.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="IndexHash.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>

@@ -36,12 +36,12 @@
     <ClInclude Include="facilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bplustree.cpp">
@@ -52,6 +52,12 @@
     </ClCompile>
     <ClCompile Include="IndexHash.cpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Database.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

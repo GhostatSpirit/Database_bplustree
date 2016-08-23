@@ -1,0 +1,601 @@
+written: 1 - 10000
+used time: 13 (seconds)
+
+fetching: 9900 - 10000
+It took me 774 microseconds in average.
+
+written: 10001 - 20000
+used time: 13 (seconds)
+
+fetching: 19900 - 20000
+It took me 391 microseconds in average.
+
+written: 20001 - 30000
+used time: 11 (seconds)
+
+fetching: 29900 - 30000
+It took me 481 microseconds in average.
+
+written: 30001 - 40000
+used time: 15 (seconds)
+
+fetching: 39900 - 40000
+It took me 525 microseconds in average.
+
+written: 40001 - 50000
+used time: 13 (seconds)
+
+fetching: 49900 - 50000
+It took me 459 microseconds in average.
+
+written: 50001 - 60000
+used time: 15 (seconds)
+
+fetching: 59900 - 60000
+It took me 332 microseconds in average.
+
+written: 60001 - 70000
+used time: 12 (seconds)
+
+fetching: 69900 - 70000
+It took me 451 microseconds in average.
+
+written: 70001 - 80000
+used time: 13 (seconds)
+
+fetching: 79900 - 80000
+It took me 408 microseconds in average.
+
+written: 80001 - 90000
+used time: 14 (seconds)
+
+fetching: 89900 - 90000
+It took me 382 microseconds in average.
+
+written: 90001 - 100000
+used time: 13 (seconds)
+
+fetching: 99900 - 100000
+It took me 415 microseconds in average.
+
+written: 100001 - 110000
+used time: 14 (seconds)
+
+fetching: 109900 - 110000
+It took me 477 microseconds in average.
+
+written: 110001 - 120000
+used time: 13 (seconds)
+
+fetching: 119900 - 120000
+It took me 354 microseconds in average.
+
+written: 120001 - 130000
+used time: 15 (seconds)
+
+fetching: 129900 - 130000
+It took me 527 microseconds in average.
+
+written: 130001 - 140000
+used time: 13 (seconds)
+
+fetching: 139900 - 140000
+It took me 465 microseconds in average.
+
+written: 140001 - 150000
+used time: 13 (seconds)
+
+fetching: 149900 - 150000
+It took me 423 microseconds in average.
+
+written: 150001 - 160000
+used time: 13 (seconds)
+
+fetching: 159900 - 160000
+It took me 366 microseconds in average.
+
+written: 160001 - 170000
+used time: 13 (seconds)
+
+fetching: 169900 - 170000
+It took me 462 microseconds in average.
+
+written: 170001 - 180000
+used time: 14 (seconds)
+
+fetching: 179900 - 180000
+It took me 550 microseconds in average.
+
+written: 180001 - 190000
+used time: 13 (seconds)
+
+fetching: 189900 - 190000
+It took me 427 microseconds in average.
+
+written: 190001 - 200000
+used time: 13 (seconds)
+
+fetching: 199900 - 200000
+It took me 443 microseconds in average.
+
+written: 200001 - 210000
+used time: 17 (seconds)
+
+fetching: 209900 - 210000
+It took me 403 microseconds in average.
+
+written: 210001 - 220000
+used time: 15 (seconds)
+
+fetching: 219900 - 220000
+It took me 345 microseconds in average.
+
+written: 220001 - 230000
+used time: 13 (seconds)
+
+fetching: 229900 - 230000
+It took me 503 microseconds in average.
+
+written: 230001 - 240000
+used time: 15 (seconds)
+
+fetching: 239900 - 240000
+It took me 550 microseconds in average.
+
+written: 240001 - 250000
+used time: 13 (seconds)
+
+fetching: 249900 - 250000
+It took me 361 microseconds in average.
+
+written: 250001 - 260000
+used time: 16 (seconds)
+
+fetching: 259900 - 260000
+It took me 361 microseconds in average.
+
+written: 260001 - 270000
+used time: 13 (seconds)
+
+fetching: 269900 - 270000
+It took me 440 microseconds in average.
+
+written: 270001 - 280000
+used time: 17 (seconds)
+
+fetching: 279900 - 280000
+It took me 412 microseconds in average.
+
+written: 280001 - 290000
+used time: 13 (seconds)
+
+fetching: 289900 - 290000
+It took me 414 microseconds in average.
+
+written: 290001 - 300000
+used time: 11 (seconds)
+
+fetching: 299900 - 300000
+It took me 594 microseconds in average.
+
+written: 300001 - 310000
+used time: 15 (seconds)
+
+fetching: 309900 - 310000
+It took me 592 microseconds in average.
+
+written: 310001 - 320000
+used time: 13 (seconds)
+
+fetching: 319900 - 320000
+It took me 593 microseconds in average.
+
+written: 320001 - 330000
+used time: 15 (seconds)
+
+fetching: 329900 - 330000
+It took me 568 microseconds in average.
+
+written: 330001 - 340000
+used time: 13 (seconds)
+
+fetching: 339900 - 340000
+It took me 338 microseconds in average.
+
+written: 340001 - 350000
+used time: 16 (seconds)
+
+fetching: 349900 - 350000
+It took me 528 microseconds in average.
+
+written: 350001 - 360000
+used time: 13 (seconds)
+
+fetching: 359900 - 360000
+It took me 583 microseconds in average.
+
+written: 360001 - 370000
+used time: 17 (seconds)
+
+fetching: 369900 - 370000
+It took me 408 microseconds in average.
+
+written: 370001 - 380000
+used time: 13 (seconds)
+
+fetching: 379900 - 380000
+It took me 619 microseconds in average.
+
+written: 380001 - 390000
+used time: 12 (seconds)
+
+fetching: 389900 - 390000
+It took me 319 microseconds in average.
+
+written: 390001 - 400000
+used time: 16 (seconds)
+
+fetching: 399900 - 400000
+It took me 547 microseconds in average.
+
+written: 400001 - 410000
+used time: 14 (seconds)
+
+fetching: 409900 - 410000
+It took me 376 microseconds in average.
+
+written: 410001 - 420000
+used time: 15 (seconds)
+
+fetching: 419900 - 420000
+It took me 437 microseconds in average.
+
+written: 420001 - 430000
+used time: 14 (seconds)
+
+fetching: 429900 - 430000
+It took me 547 microseconds in average.
+
+written: 430001 - 440000
+used time: 15 (seconds)
+
+fetching: 439900 - 440000
+It took me 492 microseconds in average.
+
+written: 440001 - 450000
+used time: 14 (seconds)
+
+fetching: 449900 - 450000
+It took me 499 microseconds in average.
+
+written: 450001 - 460000
+used time: 15 (seconds)
+
+fetching: 459900 - 460000
+It took me 386 microseconds in average.
+
+written: 460001 - 470000
+used time: 13 (seconds)
+
+fetching: 469900 - 470000
+It took me 529 microseconds in average.
+
+written: 470001 - 480000
+used time: 13 (seconds)
+
+fetching: 479900 - 480000
+It took me 539 microseconds in average.
+
+written: 480001 - 490000
+used time: 13 (seconds)
+
+fetching: 489900 - 490000
+It took me 409 microseconds in average.
+
+written: 490001 - 500000
+used time: 15 (seconds)
+
+fetching: 499900 - 500000
+It took me 350 microseconds in average.
+
+written: 500001 - 510000
+used time: 14 (seconds)
+
+fetching: 509900 - 510000
+It took me 448 microseconds in average.
+
+written: 510001 - 520000
+used time: 15 (seconds)
+
+fetching: 519900 - 520000
+It took me 345 microseconds in average.
+
+written: 520001 - 530000
+used time: 13 (seconds)
+
+fetching: 529900 - 530000
+It took me 531 microseconds in average.
+
+written: 530001 - 540000
+used time: 12 (seconds)
+
+fetching: 539900 - 540000
+It took me 453 microseconds in average.
+
+written: 540001 - 550000
+used time: 14 (seconds)
+
+fetching: 549900 - 550000
+It took me 606 microseconds in average.
+
+written: 550001 - 560000
+used time: 12 (seconds)
+
+fetching: 559900 - 560000
+It took me 361 microseconds in average.
+
+written: 560001 - 570000
+used time: 13 (seconds)
+
+fetching: 569900 - 570000
+It took me 486 microseconds in average.
+
+written: 570001 - 580000
+used time: 15 (seconds)
+
+fetching: 579900 - 580000
+It took me 535 microseconds in average.
+
+written: 580001 - 590000
+used time: 11 (seconds)
+
+fetching: 589900 - 590000
+It took me 538 microseconds in average.
+
+written: 590001 - 600000
+used time: 15 (seconds)
+
+fetching: 599900 - 600000
+It took me 353 microseconds in average.
+
+written: 600001 - 610000
+used time: 13 (seconds)
+
+fetching: 609900 - 610000
+It took me 512 microseconds in average.
+
+written: 610001 - 620000
+used time: 13 (seconds)
+
+fetching: 619900 - 620000
+It took me 473 microseconds in average.
+
+written: 620001 - 630000
+used time: 14 (seconds)
+
+fetching: 629900 - 630000
+It took me 379 microseconds in average.
+
+written: 630001 - 640000
+used time: 13 (seconds)
+
+fetching: 639900 - 640000
+It took me 366 microseconds in average.
+
+written: 640001 - 650000
+used time: 11 (seconds)
+
+fetching: 649900 - 650000
+It took me 345 microseconds in average.
+
+written: 650001 - 660000
+used time: 15 (seconds)
+
+fetching: 659900 - 660000
+It took me 566 microseconds in average.
+
+written: 660001 - 670000
+used time: 14 (seconds)
+
+fetching: 669900 - 670000
+It took me 515 microseconds in average.
+
+written: 670001 - 680000
+used time: 13 (seconds)
+
+fetching: 679900 - 680000
+It took me 439 microseconds in average.
+
+written: 680001 - 690000
+used time: 11 (seconds)
+
+fetching: 689900 - 690000
+It took me 339 microseconds in average.
+
+written: 690001 - 700000
+used time: 14 (seconds)
+
+fetching: 699900 - 700000
+It took me 425 microseconds in average.
+
+written: 700001 - 710000
+used time: 14 (seconds)
+
+fetching: 709900 - 710000
+It took me 589 microseconds in average.
+
+written: 710001 - 720000
+used time: 13 (seconds)
+
+fetching: 719900 - 720000
+It took me 388 microseconds in average.
+
+written: 720001 - 730000
+used time: 13 (seconds)
+
+fetching: 729900 - 730000
+It took me 557 microseconds in average.
+
+written: 730001 - 740000
+used time: 14 (seconds)
+
+fetching: 739900 - 740000
+It took me 395 microseconds in average.
+
+written: 740001 - 750000
+used time: 13 (seconds)
+
+fetching: 749900 - 750000
+It took me 339 microseconds in average.
+
+written: 750001 - 760000
+used time: 14 (seconds)
+
+fetching: 759900 - 760000
+It took me 590 microseconds in average.
+
+written: 760001 - 770000
+used time: 15 (seconds)
+
+fetching: 769900 - 770000
+It took me 450 microseconds in average.
+
+written: 770001 - 780000
+used time: 11 (seconds)
+
+fetching: 779900 - 780000
+It took me 502 microseconds in average.
+
+written: 780001 - 790000
+used time: 12 (seconds)
+
+fetching: 789900 - 790000
+It took me 738 microseconds in average.
+
+written: 790001 - 800000
+used time: 16 (seconds)
+
+fetching: 799900 - 800000
+It took me 402 microseconds in average.
+
+written: 800001 - 810000
+used time: 14 (seconds)
+
+fetching: 809900 - 810000
+It took me 425 microseconds in average.
+
+written: 810001 - 820000
+used time: 14 (seconds)
+
+fetching: 819900 - 820000
+It took me 529 microseconds in average.
+
+written: 820001 - 830000
+used time: 12 (seconds)
+
+fetching: 829900 - 830000
+It took me 496 microseconds in average.
+
+written: 830001 - 840000
+used time: 14 (seconds)
+
+fetching: 839900 - 840000
+It took me 396 microseconds in average.
+
+written: 840001 - 850000
+used time: 13 (seconds)
+
+fetching: 849900 - 850000
+It took me 363 microseconds in average.
+
+written: 850001 - 860000
+used time: 13 (seconds)
+
+fetching: 859900 - 860000
+It took me 524 microseconds in average.
+
+written: 860001 - 870000
+used time: 15 (seconds)
+
+fetching: 869900 - 870000
+It took me 482 microseconds in average.
+
+written: 870001 - 880000
+used time: 14 (seconds)
+
+fetching: 879900 - 880000
+It took me 512 microseconds in average.
+
+written: 880001 - 890000
+used time: 16 (seconds)
+
+fetching: 889900 - 890000
+It took me 529 microseconds in average.
+
+written: 890001 - 900000
+used time: 14 (seconds)
+
+fetching: 899900 - 900000
+It took me 484 microseconds in average.
+
+written: 900001 - 910000
+used time: 16 (seconds)
+
+fetching: 909900 - 910000
+It took me 544 microseconds in average.
+
+written: 910001 - 920000
+used time: 13 (seconds)
+
+fetching: 919900 - 920000
+It took me 498 microseconds in average.
+
+written: 920001 - 930000
+used time: 15 (seconds)
+
+fetching: 929900 - 930000
+It took me 400 microseconds in average.
+
+written: 930001 - 940000
+used time: 13 (seconds)
+
+fetching: 939900 - 940000
+It took me 569 microseconds in average.
+
+written: 940001 - 950000
+used time: 15 (seconds)
+
+fetching: 949900 - 950000
+It took me 576 microseconds in average.
+
+written: 950001 - 960000
+used time: 11 (seconds)
+
+fetching: 959900 - 960000
+It took me 436 microseconds in average.
+
+written: 960001 - 970000
+used time: 13 (seconds)
+
+fetching: 969900 - 970000
+It took me 556 microseconds in average.
+
+written: 970001 - 980000
+used time: 16 (seconds)
+
+fetching: 979900 - 980000
+It took me 369 microseconds in average.
+
+written: 980001 - 990000
+used time: 13 (seconds)
+
+fetching: 989900 - 990000
+It took me 431 microseconds in average.
+
+written: 990001 - 1000000
+used time: 17 (seconds)
+
+fetching: 999900 - 1000000
+It took me 392 microseconds in average.
+
+Press any key to continue . . .

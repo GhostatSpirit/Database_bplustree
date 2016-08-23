@@ -27,7 +27,12 @@ DataManager::DataManager(const string & _datafilepath, const string & _indexfile
 		// if we have the data file...
 		// try to read the meta file first
 		ifstream meta_ifs(meta_file_path, ios::binary);
-		if (meta_ifs) {
+		bool meta_ifs_valid = true;
+		if (!meta_ifs) {
+			meta_ifs_valid = false;
+		}
+
+		if (meta_ifs_valid) {
 			// if the meta file exists, read it
 			read_meta();
 		}
@@ -218,6 +223,28 @@ filepos DataManager::appendwrite(const string & str)
 	return new_value_pos;
 }
 
+filepos DataManager::appendwrite(const string & str, ofstream& ofs) {
+	if (!ofs) {
+		return 0;
+	}
+	ofs.seekp(0, ofs.end);
+	// saving cursor pos as new_value_pos
+	filepos new_value_pos = ofs.tellp();
+
+	valuelen value_length = get_length(str);
+	// writing data entry
+	bool valid = true;
+	// bool valid
+	ofs.write(as_bytes(valid), sizeof(bool));
+	// valuelen value_length
+	ofs.write(as_bytes(value_length), sizeof(valuelen));
+	// string value (including '\0')
+	string temp_str = str;
+	ofs.write(temp_str.c_str(), sizeof(char) * value_length);
+
+	return new_value_pos;
+}
+
 
 string DataManager::get(filepos value_pos) {
 	ifstream ifs(data_file_path, ios::binary);
@@ -278,3 +305,4 @@ bool DataManager::erase(filepos value_pos)
 
 	return true;
 }
+

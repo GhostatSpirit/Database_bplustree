@@ -1,12 +1,19 @@
 #ifndef _DATAMANAGER_H
 #define _DATAMANAGER_H
 
+#include <vector>
 #include <string>
 #include <map>
 #include "facilities.h"
 
 using namespace typedefs;
 using namespace std;
+
+struct Pair {
+	string key;
+	string value;
+};
+
 
 class DataManager {
 public:
@@ -18,6 +25,7 @@ public:
 	// if succeed, return true
 	bool erase(filepos value_pos);
 
+	vector<filepos> insert_multiple(vector<Pair>& pair);
 
 
 private:
@@ -34,6 +42,7 @@ private:
 	
 	bool overwrite(filepos value_pos, const string & str);
 	filepos appendwrite(const string & str);
+	filepos appendwrite(const string & str, ofstream& ofs);
 
 	
 	// get the real length of the string (including '\0')

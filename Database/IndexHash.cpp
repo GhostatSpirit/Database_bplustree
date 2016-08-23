@@ -6,10 +6,7 @@
 #include "facilities.h"
 
 
-
-
-
-IndexHash::IndexHash(const string & _file_name, unsigned long _table_size):
+HashDatabase::HashDatabase(const string & _file_name, unsigned long _table_size):
 
 	// initialize data manager
 	data_man(_file_name + ".dat", _file_name + ".idx")
@@ -47,7 +44,12 @@ IndexHash::IndexHash(const string & _file_name, unsigned long _table_size):
 		ReadHeader();
 		// try to read the meta file, if failed, create a new one
 		ifstream meta_ifs(m_index_meta_path, ios::binary);
-		if (meta_ifs) {
+		bool meta_ifs_valid = true;
+		if (!meta_ifs) {
+			meta_ifs_valid = false;
+		}
+		meta_ifs.close();
+		if (meta_ifs_valid) {
 			// if the meta file exists, read it
 			read_meta();
 		}
@@ -62,12 +64,12 @@ IndexHash::IndexHash(const string & _file_name, unsigned long _table_size):
 
 }
 
-IndexHash::~IndexHash() {
+HashDatabase::~HashDatabase() {
 	WriteHeader();
 	save_meta();
 }
 
-string IndexHash::db_fetch(const string & key)
+string HashDatabase::db_fetch(const string & key)
 {
 	hashval hash_value;
 	bool succeeded = get_hash(key, hash_value);
@@ -88,7 +90,7 @@ string IndexHash::db_fetch(const string & key)
 		
 }
 
-int IndexHash::db_delete(const string & key)
+int HashDatabase::db_delete(const string & key)
 {
 	// get hash_value of the key
 	hashval hash_value;
@@ -103,7 +105,7 @@ int IndexHash::db_delete(const string & key)
 	return 0;
 }
 
-bool IndexHash::db_exist(const string & key)
+bool HashDatabase::db_exist(const string & key)
 {
 	hashval hash_value;
 	bool succeeded = get_hash(key, hash_value);
@@ -124,7 +126,7 @@ bool IndexHash::db_exist(const string & key)
 
 
 
-int IndexHash::db_store(const string& key, const string& value, int flag) {
+int HashDatabase::db_insert(const string& key, const string& value, int flag) {
 	bool key_exists = db_exist(key);
 	if (key_exists) {
 		return -1;
@@ -188,8 +190,19 @@ int IndexHash::db_store(const string& key, const string& value, int flag) {
 
 }
 
+int HashDatabase::db_replace(const string & key, const string & value)
+{
+	filepos index_pos = GetIndexPos(key);
+	if (index_pos == 0) return -1;
 
-bool IndexHash::save_meta()
+	filepos new_value_pos = ReplaceValue(index_pos, key, value);
+	
+	if (new_value_pos != 0) return -2;
+	return 0;
+}
+
+
+bool HashDatabase::save_meta()
 {
 
 	ofstream ofs(m_index_meta_path, ios::binary | ios::trunc); // trunc: clearing the content
@@ -222,7 +235,7 @@ bool IndexHash::save_meta()
 }
 
 
-bool IndexHash::read_meta()
+bool HashDatabase::read_meta()
 {
 	ifstream ifs(m_index_meta_path, ifstream::binary);
 	if (!ifs) {
@@ -258,7 +271,7 @@ bool IndexHash::read_meta()
 
 }
 
-filepos IndexHash::AppendIndex(const string & key, const string & value, filepos next_index_pos)
+filepos HashDatabase::AppendIndex(const string & key, const string & value, filepos next_index_pos)
 {
 	// insert the value string into the 
 	filepos value_pos = data_man.insert(value);
@@ -294,7 +307,7 @@ filepos IndexHash::AppendIndex(const string & key, const string & value, filepos
 
 }
 
-bool IndexHash::OverwriteIndex(filepos index_pos, const string& key, const string& value, filepos next_index_pos) {
+bool HashDatabase::OverwriteIndex(filepos index_pos, const string& key, const string& value, filepos next_index_pos) {
 	fstream fs(m_index_path, ios::binary | ios::in | ios::out);
 	fs.seekg(index_pos);
 	// examine the old entry first
@@ -344,7 +357,58 @@ bool IndexHash::OverwriteIndex(filepos index_pos, const string& key, const strin
 	return true;
 }
 
-bool IndexHash::SetNextIndexPos(filepos index_pos, filepos next_index_pos) {
+filepos HashDatabase::ReplaceValue(filepos index_pos, const string & _key, const string & _value)
+{
+	fstream fs(m_index_path, ios::binary | ios::in | ios::out);
+	if (!fs) return 0;
+	fs.seekg(index_pos);
+
+	// store all useful index entry info
+	bool valid;
+	filepos next_index_pos;
+	keylen key_length;
+	filepos value_pos;
+
+	fs.read(as_bytes(valid), sizeof(bool));
+	// filepos next_index_pos
+	fs.read(as_bytes(next_index_pos), sizeof(filepos));
+	// keylen key_length
+	fs.read(as_bytes(key_length), sizeof(keylen));
+
+	// string key
+	char* p_cstring = new char[key_length];
+	fs.read(p_cstring, sizeof(char) * key_length);
+	string key(p_cstring);
+	delete[] p_cstring;
+
+	filepos before_value_pos = fs.tellg();
+	// filepos value_pos
+	fs.read(as_bytes(value_pos), sizeof(filepos));
+	
+	if (valid != true) {
+		cerr << "ReplaceValue: replacing invalid index entry" << endl;
+		return 0;
+	}
+
+	if (key != _key) {
+		cerr << "ReplaceValue: key does not match" << endl;
+		return 0;
+	}
+
+	// now the key must match, delete the old value and change the value_pos to a new value
+	data_man.erase(value_pos);
+	filepos new_value_pos = data_man.insert(_value);
+	// write in the new value pos
+	fs.seekg(before_value_pos);
+	fs.seekp(fs.tellg());
+	fs.write(as_bytes(new_value_pos), sizeof(filepos));
+
+	fs.close();
+
+	return new_value_pos;
+}
+
+bool HashDatabase::SetNextIndexPos(filepos index_pos, filepos next_index_pos) {
 	if (index_pos == 0) {
 		cerr << "SetNextIndexPos: index_pos is null" << endl;
 		return false;
@@ -364,7 +428,7 @@ bool IndexHash::SetNextIndexPos(filepos index_pos, filepos next_index_pos) {
 	return true;
 }
 
-filepos IndexHash::GetNextIndexPos(filepos index_pos)
+filepos HashDatabase::GetNextIndexPos(filepos index_pos)
 {
 	ifstream ifs(m_index_path, ios::binary);
 	ifs.seekg(index_pos);
@@ -384,7 +448,7 @@ filepos IndexHash::GetNextIndexPos(filepos index_pos)
 }
 
 
-bool IndexHash::DeleteEntry(filepos index_pos, const string& deleted_key, filepos last_index_pos)
+bool HashDatabase::DeleteEntry(filepos index_pos, const string& deleted_key, filepos last_index_pos)
 {
 	ifstream ifs(m_index_path, ios::binary);
 	if (!ifs) {
@@ -474,7 +538,7 @@ bool IndexHash::DeleteEntry(filepos index_pos, const string& deleted_key, filepo
 
 }
 
-filepos IndexHash::GetDataPos(filepos index_pos, const string & target_key)
+filepos HashDatabase::GetDataPos(filepos index_pos, const string & target_key)
 {
 	if (index_pos == 0) {
 		cout << "error1";
@@ -530,8 +594,73 @@ filepos IndexHash::GetDataPos(filepos index_pos, const string & target_key)
 	return 0;
 }
 
+filepos HashDatabase:: GetIndexPos(const string& key)
+{
+	hashval hash_value;
+	bool succeeded = get_hash(key, hash_value);
+	if (!succeeded) {
+		cerr << "GetDataPos: 1" << endl;
+		return 0;
+	}
+	// if the bucket is being used
+	// get the index pos
+	filepos index_pos = m_hash_table[hash_value].index_pos;
+	index_pos = GetIndexPos(index_pos, key);
 
-filepos IndexHash::ConvertToBucketPos(hashval hash_value)
+	return index_pos;
+}
+
+filepos HashDatabase::GetIndexPos(filepos index_pos, const string& target_key) {
+	if (index_pos == 0) {
+		cerr << "GetDataPos: 3" << endl;
+		return 0;
+	}
+	ifstream ifs(m_index_path, ios::binary);
+	if (!ifs) {
+		return 0;
+	}
+	ifs.seekg(index_pos);
+
+	// store all useful index entry info
+	bool valid;
+	filepos next_index_pos;
+	keylen key_length;
+
+	ifs.read(as_bytes(valid), sizeof(bool));
+	// filepos next_index_pos
+	ifs.read(as_bytes(next_index_pos), sizeof(filepos));
+	// keylen key_length
+	ifs.read(as_bytes(key_length), sizeof(keylen));
+
+	// string key
+	char* p_cstring = new char[key_length];
+	ifs.read(p_cstring, sizeof(char) * key_length);
+	string key(p_cstring);
+	delete[] p_cstring;
+
+	ifs.close();
+
+	// find recursively 
+	if (target_key == key && valid == true) {
+		// if we find the key, return the filepos for the value
+		return index_pos;
+	}
+	else if (next_index_pos != 0 && valid == true) {
+		// if the key does not match but we have a next_index_pos
+		// call this function recursively
+		return GetIndexPos(next_index_pos, target_key);
+	}
+	else {
+		// we cannot find the matching key, return null value
+		if (valid == false) {
+			cerr << "GetIndexPos: reached invalid entry" << endl;
+		}
+		return 0;
+	}
+}
+
+
+filepos HashDatabase::ConvertToBucketPos(hashval hash_value)
 {
 	if (first_bucket_pos == 0) {
 		throw runtime_error("GetFilepos: first_bucket_pos not defined");
@@ -544,7 +673,7 @@ filepos IndexHash::ConvertToBucketPos(hashval hash_value)
 
 
 
-void IndexHash::InitHashTable()
+void HashDatabase::InitHashTable()
 {
 	for (unsigned long i = 0; i < table_size; ++i) {
 		HashTableUnit unit;
@@ -557,7 +686,7 @@ void IndexHash::InitHashTable()
 	cout << single_bucket_size << endl;
 }
 
-bool IndexHash::WriteNewHeader() {
+bool HashDatabase::WriteNewHeader() {
 	ofstream ofs(m_index_path, ios::binary | ios::trunc);
 	if (!ofs) {
 		return false;
@@ -607,7 +736,7 @@ bool IndexHash::WriteNewHeader() {
 	return true;
 }
 
-bool IndexHash::WriteHeader() {
+bool HashDatabase::WriteHeader() {
 	// using basic fstream to prevent truncating file
 	fstream ofs(m_index_path, ios::binary | ios::in | ios::out);
 
@@ -660,7 +789,7 @@ bool IndexHash::WriteHeader() {
 	return true;
 }
 
-bool IndexHash::ReadHeader() {
+bool HashDatabase::ReadHeader() {
 	ifstream ifs(m_index_path, ios::binary);
 	if (!ifs) {
 		return false;
@@ -707,7 +836,7 @@ bool IndexHash::ReadHeader() {
 
 
 
-void IndexHash::InitCryptTable()
+void HashDatabase::InitCryptTable()
 {
 	unsigned long seed = 0x00100001, index1 = 0, index2 = 0, i;
 
@@ -725,7 +854,7 @@ void IndexHash::InitCryptTable()
 	}
 }
 
-hashval IndexHash::HashString(const string & lpszString, unsigned long dwHashType)
+hashval HashDatabase::HashString(const string & lpszString, unsigned long dwHashType)
 {
 	unsigned char *key = (unsigned char *)(const_cast<char*>(lpszString.c_str()));
 	unsigned long seed1 = 0x7FED7FED, seed2 = 0xEEEEEEEE;
@@ -741,7 +870,7 @@ hashval IndexHash::HashString(const string & lpszString, unsigned long dwHashTyp
 	return seed1;
 }
 
-bool IndexHash::get_hash(const string & str, hashval& hash_value)
+bool HashDatabase::get_hash(const string & str, hashval& hash_value)
 {
 	// calculate the three hash values of the given string
 	hashval nHash = HashString(str, HASH_OFFSET);
@@ -767,7 +896,7 @@ bool IndexHash::get_hash(const string & str, hashval& hash_value)
 	return false;
 }
 
-bool IndexHash::create_hash(const string & str, hashval & hash_value) {
+bool HashDatabase::create_hash(const string & str, hashval & hash_value) {
 	// calculate the three hash values of the given string
 	hashval nHash = HashString(str, HASH_OFFSET);
 	hashval nHashA = HashString(str, HASH_A);
@@ -791,4 +920,8 @@ bool IndexHash::create_hash(const string & str, hashval & hash_value) {
 	m_hash_table[nHashPos].hash_B = nHashB;
 	hash_value = nHashPos;
 	return true;
+}
+
+void HashDatabase::message(string msg) {
+	cout << "> " << msg << endl;
 }

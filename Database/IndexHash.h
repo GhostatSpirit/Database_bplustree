@@ -27,15 +27,18 @@ struct HashTableUnit {
 	}
 };
 
-class IndexHash {
+class HashDatabase {
 
 public:
-	IndexHash(const string & _file_name, unsigned long _table_size = MAXTABLESIZE);
-	~IndexHash();
+	HashDatabase(const string & _file_name, unsigned long _table_size = MAXTABLESIZE);
+	~HashDatabase();
 
-	int db_store(const string& key, const string& value, int flag = 0);
+	int db_insert(const string& key, const string& value, int flag = 0);
+
+	int db_replace(const string& key, const string& value);
 
 	string db_fetch(const string& key);
+
 	int db_delete(const string& key);
 
 private:
@@ -80,12 +83,17 @@ private:
 
 	filepos AppendIndex(const string & key, const string & value, filepos next_index_pos = 0);
 	bool OverwriteIndex(filepos index_pos, const string& key, const string& value, filepos next_index_pos = 0);
+
+	filepos ReplaceValue(filepos index_pos, const string & _key, const string & _value);
+
 	bool SetNextIndexPos(filepos index_pos, filepos next_index_pos);
 	filepos GetNextIndexPos(filepos index_pos);
 
 
 	bool DeleteEntry(filepos index_pos, const string& deleted_key, filepos last_index_pos = 0);
 	filepos GetDataPos(filepos index_pos, const string& target_key);
+	filepos GetIndexPos(const string& key);
+	filepos GetIndexPos(filepos index_pos, const string& target_key);
 
 private:
 
@@ -99,9 +107,7 @@ private:
 	bool WriteHeader();
 	bool ReadHeader();
 
-	void message(string msg) {
-		cout << "> " << msg << endl;
-	}
+	void message(string msg);
 
 
 private:
@@ -114,6 +120,9 @@ private:
 private:
 	char spliter = '\n';
 };
+
+
+typedef HashDatabase DB;
 
 
 
